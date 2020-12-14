@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshuai.mapper.ApiMapper">
+
+    <select id="listApiInfoBack" resultType="com.xiaoshuai.dto.ApiBackDTO">
+      select
+        a.id,
+        a.api_id,
+        a.name,
+        a.url,
+        a.method,
+        a.pid,
+        a.description,
+        a.sort
+        from (
+        select  *
+        from  tb_api
+        <where>
+            <if test="apiId!=null">
+                api_id=#{apiId}
+                or pid=#{apiId}
+            </if>
+        </where>
+        LIMIT #{current},#{size}
+        ) a
+
+
+
+
+
+    </select>
+</mapper>

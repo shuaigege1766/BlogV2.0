@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshuai.mapper.UserMapper">
+
+    <select id="listUserRolesByUsername" resultType="java.lang.String">
+        select tb_role.role_name
+        from tb_role, tb_user, tb_role_user
+        where tb_role.role_id=tb_role_user.role_id
+        and tb_user.user_id=tb_role_user.user_id
+        and tb_user.username=#{username}
+    </select>
+<!--    分页查询用户列表-->
+    <select id="getUserListPage" resultType="com.xiaoshuai.dto.UserListPageDTO">
+      select
+      a.user_id,
+      a.nickname,
+      a.avatar,
+      a.create_time,
+      a.update_time,
+      a.is_silence,
+      b.description
+      from  tb_user a
+      inner join  tb_role_user c on a.user_id =c.user_id
+      inner join  tb_role b on  c.role_id = b.role_id
+        <where>
+            <if test="roleName != null and roleName!=''">
+                b.description = #{roleName}
+            </if>
+            <if test="nickname != null and nickname!=''">
+                AND a.nickname like "%"#{nickname}"%"
+            </if>
+        </where>
+    </select>
+    <select id="getApiUrlByUserName" resultType="com.xiaoshuai.entity.Api">
+     select
+      *
+       from  tb_api c,
+       (
+       select
+         a.role_id
+         from tb_role_user a , tb_user  b
+         where  a.user_id=b.user_ID
+				 and b.username=#{username}
+       ) t ,tb_role_api d
+
+       where  d.role_id=t.role_id
+			 and d.api_id=c.id
+
+
+    </select>
+</mapper>

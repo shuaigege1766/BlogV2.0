@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshuai.mapper.RoleMapper">
+    <insert id="saveRolePermissionList">
+       insert into tb_role_api(role_id,api_id)
+       values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (#{item.roleId},#{item.apiId})
+        </foreach>
+    </insert>
+    <delete id="deleteRolePermissionList">
+        delete 
+        from  tb_role_api
+        where tb_role_api.role_id=#{roleId}
+    </delete>
+
+    <select id="getAssignedApiIdByUserRoleId" resultType="java.lang.Integer">
+        select a.api_id
+        from
+        tb_role_api a,tb_api b
+        where  a.api_id=b.id
+        and  a.role_id=#{roleId}
+    </select>
+</mapper>

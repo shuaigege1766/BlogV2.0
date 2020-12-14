@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshuai.mapper.MenuMapper">
+    <resultMap id="ListProduct" type="com.xiaoshuai.dto.MenuDTO">
+        <id column="menu_id" property="menuId"></id>
+        <result column="menu_name" property="menuName"></result>
+        <result column="menu_url" property="menuUrl"></result>
+        <result column="parent_id" property="parentId"></result>
+        <result column="menu_sort" property="menuSort"></result>
+        <result column="description" property="description"></result>
+        <collection property="children" ofType="com.xiaoshuai.entity.Menu" column="menu_id" select="listProductChildren">
+
+        </collection>
+    </resultMap>
+    <select id="listProduct" resultMap="ListProduct">
+      select  distinct 
+        a.menu_id,
+        a.menu_name,
+        a.menu_url,
+        a.parent_id,
+        a.menu_sort,
+        a.description,
+        a.menu_icon
+       FROM tb_menu  a
+       where  a.parent_id is null or a.parent_id=0
+       order  by a.menu_sort asc
+    </select>
+    <select id="listProductChildren" resultMap="ListProduct">
+      select  distinct
+        a.menu_id,
+        a.menu_name,
+        a.menu_url,
+        a.parent_id,
+        a.menu_sort,
+        a.description,
+        a.menu_icon
+       FROM   tb_menu  a
+       where  a.parent_id=#{id}
+       order  by a.menu_sort asc
+    </select>
+</mapper>

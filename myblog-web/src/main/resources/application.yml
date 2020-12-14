@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: myblog-web
+  datasource:
+   driver-class-name: com.mysql.cj.jdbc.Driver
+   url: jdbc:mysql://101.37.91.173:3306/blogV2.0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+   username: root
+   password: root
+   type: com.alibaba.druid.pool.DruidDataSource
+
+  #邮箱配置
+  mail:
+    host: smtp.qq.com
+    username: 1766281636@qq.com
+    password: watifvindzpmfdaj
+    default-encoding: UTF-8
+    port: 587
+    properties:
+      mail:
+      smtp:
+      auth: true
+      socketFactory:
+      class: javax.net.ssl.SSLSocketFactory
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+  redis:
+    database: 0
+    host: 101.37.91.173
+    port: 6379
+    password: root
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl:  org.apache.ibatis.logging.slf4j.Slf4jImpl
+  #    逻辑删除
+  global-config:
+    db-config:
+      logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+      logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+server:
+  port: 8090
+
+#邮箱配置
+alioss:
+  endpoint: oss-cn-hangzhou.aliyuncs.com
+  accessKeyId: LTAI4GGxUPBP8RgRyaRJD2Lr
+  accessKeySecret: ggkoW5sfLN7sS4aNHiG7YEwsXzURQQ
+  bucketName: xiaoshuaiblog
+

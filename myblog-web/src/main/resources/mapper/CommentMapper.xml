@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshuai.mapper.CommentMapper">
+
+    <select id="listComments" resultType="com.xiaoshuai.dto.CommentDTO">
+       select
+        a.id,
+        a.user_id,
+        b.nickname,
+        b.avatar,
+        a.comment_content,
+        a.create_time
+        from tb_comment a
+        inner join tb_user b on b.user_id=a.user_id
+        WHERE
+        <if test="articleId != null">
+            a.article_id = #{articleId}
+        </if>
+        <if test="articleId == null">
+           a.article_id is NULL
+        </if>
+        and  a.is_delete=0
+        and  parent_id IS NULL
+        ORDER BY
+        a.create_time asc
+        LIMIT #{current},10
+    </select>
+    
+    <select id="listReplies" resultType="com.xiaoshuai.dto.ReplyDTO">
+        SELECT*FROM(SELECT
+        c.user_id,
+        u.nickname,
+        u.avatar,
+        c.reply_id,
+        r.nickname AS reply_nickname,
+        c.id,
+        c.parent_id,
+        c.comment_content,
+        c.create_time,
+        row_number () over ( PARTITION BY parent_id ORDER BY create_time ASC ) row_num
+        FROM
+        tb_comment c
+        JOIN tb_user u ON c.user_id = u.user_id
+        JOIN tb_user r ON c.reply_id = r.user_id
+        WHERE
+        c.is_delete = 0
+        AND
+        parent_id IN
+        (<foreach collection="commentIdList" item="commentId" separator=",">
+        #{commentId}
+    </foreach>)) t
+        WHERE
+        4 > row_num
+
+    </select>
+    
+    <select id="listReplyCountByCommentId" resultType="com.xiaoshuai.dto.ReplyCountDTO">
+        SELECT
+        parent_id as comment_id,
+        count(1) AS reply_count
+        FROM
+        tb_comment
+        WHERE
+        is_delete = 0
+        AND
+        parent_id IN
+        (
+        <foreach collection="commentIdList" item="commentId" separator=",">
+            #{commentId}
+        </foreach>
+        )
+        GROUP BY
+        parent_id
+    </select>
+    
+    <select id="listRepliesByCommentId" resultType="com.xiaoshuai.dto.ReplyDTO">
+        SELECT
+        c.user_id,
+        u.nickname,
+        u.avatar,
+        c.reply_id,
+        r.nickname as reply_nickname,
+        c.id,
+        c.parent_id,
+        c.comment_content,
+        c.create_time
+        FROM
+        tb_comment c
+        JOIN tb_user u ON c.user_id = u.user_id
+        JOIN tb_user r ON c.reply_id = r.user_id
+        WHERE
+        c.is_delete = 0
+        AND
+        parent_id =#{commentId}
+        ORDER BY create_time ASC
+        LIMIT #{current},5
+
+
+    </select>
+
+    <select id="getUserReplyList" resultType="com.xiaoshuai.dto.CommentBackDTO">
+      select
+        a.user_id,
+        b.avatar,
+        b.nickname,
+        a.reply_id,
+        c.nickname as reply_nickname,
+        a.article_id,
+        d.article_title,
+        a.create_time,
+        a.comment_content
+        from   tb_comment a ,tb_user b,tb_article d,tb_user c
+		where
+        c.user_id=a.user_id
+        and a.user_id=b.user_id
+        and  d.article_id=a.article_id
+        <if test='nickname!=null and nickname!="" '>
+          and b.nickname=#{nickname}
+        </if>
+        LIMIT #{current},#{size}
+
+    </select>
+</mapper>
