@@ -3,15 +3,15 @@ spring:
     name: myblog-web
   datasource:
    driver-class-name: com.mysql.cj.jdbc.Driver
-   url: jdbc:mysql://localhost/blogV2.0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
+   url: jdbc:mysql://101.37.91.173:3306/blogV2.0?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
    username: root
-   password: root
+   password: 你的数据库密码
    type: com.alibaba.druid.pool.DruidDataSource
 
   #邮箱配置
   mail:
     host: smtp.qq.com
-    username: 你的qq@qq.com
+    username: 1766281636@qq.com
     password: 密码
     default-encoding: UTF-8
     port: 587
