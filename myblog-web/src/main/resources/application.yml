@@ -46,8 +46,8 @@ server:
 
 #邮箱配置
 alioss:
-  endpoint: oss-cn-hangzhou.aliyuncs.com
-  accessKeyId: LTAI4GGxUPBP8RgRyaRJD2Lr
-  accessKeySecret: ggkoW5sfLN7sS4aNHiG7YEwsXzURQQ
-  bucketName: xiaoshuaiblog
+  endpoint: 
+  accessKeyId:
+  accessKeySecret: 
+  bucketName:
 
