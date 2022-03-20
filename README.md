@@ -1,7 +1,7 @@
 ## 博客介绍 
-博客在线地址: [TBSWFGP的个人博客](http://www.justcopy.top/)
+博客在线地址: [TBSWFGP的个人博客](http://www.justcopy.ink/)
 
-后台在线地址： [后台在线地址](http://www.justcopy.top:8081)
+后台在线地址： [后台在线地址](http://www.justcopy.ink:8081)
 
 测试账号: testUser  密码：000000  可以进入后台查看
 
